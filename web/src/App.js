@@ -4,73 +4,29 @@ import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import './App.css'
 
 function App() {
+  
     return (
-        <BrowserRouter>
-            <div
-                style={{
-                    paddingTop: '1.4em',
-                    textAlign: 'center',
-                    backgroundColor: '#282c34',
-                    fontSize: '1.2rem',
-                }}
-            >
-                <Link
-                    className='App-link'
-                    to='/'
-                    style={{ margin: '1.4rem' }}
-                    title='Ir a inicio'
-                >
-                    Inicio
-                </Link>
-                <Link
-                    className='App-link'
-                    to='/about'
-                    style={{ margin: '1.4rem' }}
-                    title='Ir a Sobre Nosotros'
-                >
-                    Sobre Nosotros
-                </Link>
+       
+    <div class="container">
+     <div class = "raw ">
+     <div class="col-lg-4"  style={{marginRight:'em'}}></div>
+     <div class="card">
+      <div class="card-body">
+      <div class="list-group">
+      <div class="list-group">
+            <button type="button" class="list-group-item list-group-item-action">"url_details":"https:\/\/www.openlibra.com\/book\/diseno-agil-con-tdd\/"</button>
+            <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
+            <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
+            <button type="button" class="list-group-item list-group-item-action">Vestibulum at eros</button>
             </div>
+            </div>
+      </div>
+    </div>
+    </div>
+  </div>
+        );
 
-            <Switch>
-                <Route
-                    exact
-                    path='/'
-                    component={() => {
-                        return (
-                            <div className='App'>
-                                <header className='App-header'>
-                                    <img src={logo} className='App-logo' alt='logo' />
-                                    <p>
-                                        Edit <code>src/App.js</code> and save to reload.
-                                    </p>
-                                    <a
-                                        className='App-link'
-                                        href='https://reactjs.org'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
-                                        Learn React
-                                    </a>
-                                </header>
-                            </div>
-                        )
-                    }}
-                />
-                <Route
-                    exact
-                    path='/about'
-                    component={() => {
-                        return (
-                            <div className='App-header'>
-                                <strong>Sobre Nosotros</strong>
-                            </div>
-                        )
-                    }}
-                />
-            </Switch>
-        </BrowserRouter>
-    )
+ 
 }
 
 export default App
