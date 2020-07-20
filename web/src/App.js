@@ -1,32 +1,49 @@
 import React from 'react'
-import logo from './logo.svg'
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
-import './App.css'
+import {useParams} from 'react-router-dom'
 
-function App() {
-  
+const App = () => {
+
+   
+    const [equipo, setEquipo] = React.useState([])
+
+    React.useEffect(() => {
+        obtenerDatos()
+    }, [])
+
+    const obtenerDatos = async () => {
+        const data = await fetch('https://www.etnassoft.com/api/v1/get/?num_items=25')
+        const title = await data.json()
+        //console.log()
+        setEquipo(title)
+    }
+
     return (
-       
-    <div class="container">
-     <div class = "raw ">
-     <div class="col-lg-4"  style={{marginRight:'em'}}></div>
-     <div class="card">
-      <div class="card-body">
-      <div class="list-group">
-      <div class="list-group">
-            <button type="button" class="list-group-item list-group-item-action">"url_details":"https:\/\/www.openlibra.com\/book\/diseno-agil-con-tdd\/"</button>
-            <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-            <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-            <button type="button" class="list-group-item list-group-item-action">Vestibulum at eros</button>
-            </div>
-            </div>
-      </div>
-    </div>
-    </div>
-  </div>
-        );
+        <div>
+            <h1>CATOLOGO GENERAL:</h1>
 
- 
+                <div class="col-lg-14" >
+                <div class="row mx-md-5">
+                  <ul class="list-group">
+                    {
+                     equipo.map(item =>(
+                     
+                    <a href="#" class="list-group-item list-group-item-action "key="item.ID">
+                        <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Titulo: {item.title}</h5>
+                        </div>
+                        <p class="mb-1">Autor: {item.author}</p>
+                        <small>Lenguaje:  {item.language}.</small>
+                     
+                    </a>
+                        )) 
+                    }
+                    </ul>
+                     </div>
+                </div>
+            </div>
+        
+        
+    )
 }
 
 export default App
