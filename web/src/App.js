@@ -1,11 +1,13 @@
 import React from 'react'
 import logo from './logo.svg'
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import { Router, Route, Switch, Link } from 'react-router-dom'
 import './App.css'
+
+import { history } from './services'
 
 function App() {
     return (
-        <BrowserRouter>
+        <Router history={history}>
             <div
                 style={{
                     paddingTop: '1.4em',
@@ -69,7 +71,7 @@ function App() {
                     }}
                 />
             </Switch>
-        </BrowserRouter>
+        </Router>
     )
 }
 

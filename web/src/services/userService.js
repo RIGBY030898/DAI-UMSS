@@ -8,15 +8,19 @@ class UserService extends Service {
     }
 
     login(username, passwordUser) {
-        this.db.child(username).once('value', (snapshot) => {
-            if (snapshot.exists()) {
-                const { password } = snapshot.val()
-                if (password === passwordUser) {
-                    localStorage.setItem('user', username)
-                    this.notify()
+        this.db
+            .child(username)
+            .once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const { password } = snapshot.val()
+                    if (password === passwordUser) {
+                        localStorage.setItem('user', username)
+                    }
                 }
-            }
-        })
+            })
+            .finally(() => {
+                this.notify()
+            })
     }
 
     logout() {
@@ -29,16 +33,32 @@ class UserService extends Service {
         return user !== null
     }
 
-    register(username, password) {
-        this.db
-            .child(username)
-            .set({ username: username, password: password })
-            .then(() => {
-                this.notify({ registered: true })
-            })
-            .catch(() => {
-                this.notify({ registered: false })
-            })
+    getLoggedUser() {
+        return localStorage.getItem('user')
+    }
+
+    async register(username, password) {
+        const userDB = this.db.child(username)
+
+        var registered = false
+
+        await userDB.once('value', (snapshot) => {
+            if (!snapshot.exists()) {
+                registered = true
+            }
+        })
+        if (registered) {
+            userDB
+                .set({ username, password })
+                .catch(() => {
+                    registered = false
+                })
+                .finally(() => {
+                    this.notify({ registered })
+                })
+        } else {
+            this.notify({ registered })
+        }
     }
 }
 
