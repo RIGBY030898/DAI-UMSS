@@ -1,7 +1,6 @@
 import Service from './service'
-import { get, post } from './http'
+import { http } from '.'
 
-const endPointURL = process.env.REACT_APP_SERVER_END_POINT_URL
 const reference = 'Agents'
 
 const agentsType = {
@@ -23,10 +22,27 @@ class AgentService extends Service {
             name: agentName,
             type: agentType,
         }
-        var data = await post(endPointURL, agent)
+        var data
+        await http
+            .request({
+                url: '/agents',
+                method: 'POST',
+                data: agent,
+            })
+            .then((response) => {
+                data = response
+            })
+            .catch((error) => {
+                data = error
+                console.log(error)
+            })
         const { status } = data
         if (status) {
-            this.notify(data)
+            if (data['data']) {
+                this.notify(data['data'])
+            } else {
+                this.notify(data)
+            }
         } else {
             const user = localStorage.getItem('user')
             await this.db
@@ -40,11 +56,6 @@ class AgentService extends Service {
                 )
             this.notify(data)
         }
-    }
-
-    async getAgentsName() {
-        const agentsName = await get(endPointURL)
-        return agentsName
     }
 
     async getAllAgents() {
@@ -64,4 +75,4 @@ class AgentService extends Service {
     }
 }
 
-export { endPointURL, reference, AgentService, getValueAgentType, agentsType }
+export { reference, AgentService, getValueAgentType, agentsType }

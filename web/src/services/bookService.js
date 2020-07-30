@@ -1,6 +1,5 @@
 import Service from './service'
-import { endPointURL } from './agentService'
-import { post } from './http'
+import { http } from '.'
 
 const reference = 'Books'
 
@@ -14,8 +13,19 @@ class BookService extends Service {
             name: nameBook,
             price: price,
         }
-        const data = await post(`${endPointURL}/${agentType}/${agentName}`, book)
-        this.notify(data)
+        http.request({
+            url: `/agents/${agentType}/${agentName}`,
+            method: 'POST',
+            data: book,
+        })
+            .then((data) => console.log(data))
+            .catch((error) => {
+                if (error['data']) {
+                    console.log(error['data'])
+                } else {
+                    console.log(error)
+                }
+            })
     }
 }
 

@@ -1,6 +1,8 @@
+import * as http from './http'
+
+export { http }
 export { reference as referenceUser, UserService } from './userService'
 export {
-    endPointURL,
     reference as referenceAgent,
     AgentService,
     getValueAgentType,
