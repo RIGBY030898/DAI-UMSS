@@ -54,6 +54,9 @@ class UserService extends Service {
                     registered = false
                 })
                 .finally(() => {
+                    if (registered) {
+                        localStorage.setItem('user', username)
+                    }
                     this.notify({ registered })
                 })
         } else {

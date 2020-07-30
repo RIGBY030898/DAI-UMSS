@@ -1,75 +1,67 @@
-import React from 'react'
-import logo from './logo.svg'
-import { Router, Route, Switch, Link } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+//import logo from './logo.svg'
+import { Router, Route, Switch } from 'react-router-dom'
 import './App.css'
 
 import { history } from './services'
+import { main, agentRoute, createAgentRoute } from './constants'
+import { Header } from './components'
+import {
+    LoginPage,
+    NotFoundPage,
+    AgentsPage,
+    CreateAgentPage,
+    AddBookPage,
+} from './pages/'
 
-function App() {
+const App = (props) => {
+    const [login, setLogin] = useState(false)
+
+    useEffect(() => {
+        if (localStorage.getItem('user')) {
+            setLogin(true)
+        }
+    }, [])
+
+    const hadleChangeLogin = () => {
+        if (login) {
+            localStorage.removeItem('user')
+        }
+        setLogin(!login)
+    }
+
     return (
         <Router history={history}>
-            <div
-                style={{
-                    paddingTop: '1.4em',
-                    textAlign: 'center',
-                    backgroundColor: '#282c34',
-                    fontSize: '1.2rem',
-                }}
-            >
-                <Link
-                    className='App-link'
-                    to='/'
-                    style={{ margin: '1.4rem' }}
-                    title='Ir a inicio'
-                >
-                    Inicio
-                </Link>
-                <Link
-                    className='App-link'
-                    to='/about'
-                    style={{ margin: '1.4rem' }}
-                    title='Ir a Sobre Nosotros'
-                >
-                    Sobre Nosotros
-                </Link>
-            </div>
+            <Header {...props} notify={hadleChangeLogin} login={login} />
 
             <Switch>
                 <Route
                     exact
-                    path='/'
-                    component={() => {
-                        return (
-                            <div className='App'>
-                                <header className='App-header'>
-                                    <img src={logo} className='App-logo' alt='logo' />
-                                    <p>
-                                        Edit <code>src/App.js</code> and save to reload.
-                                    </p>
-                                    <a
-                                        className='App-link'
-                                        href='https://reactjs.org'
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
-                                        Learn React
-                                    </a>
-                                </header>
-                            </div>
-                        )
-                    }}
+                    path={main}
+                    component={(props) => (
+                        <LoginPage
+                            {...props}
+                            notify={hadleChangeLogin}
+                            loggedIn={login}
+                        />
+                    )}
                 />
                 <Route
                     exact
-                    path='/about'
-                    component={() => {
-                        return (
-                            <div className='App-header'>
-                                <strong>Sobre Nosotros</strong>
-                            </div>
-                        )
-                    }}
+                    path={agentRoute}
+                    component={(props) => <AgentsPage {...props} login={login} />}
                 />
+                <Route
+                    exact
+                    path={createAgentRoute}
+                    component={(props) => <CreateAgentPage {...props} login={login} />}
+                />
+                <Route
+                    exact
+                    path={`${agentRoute}/:agentType/:agentName`}
+                    component={(props) => <AddBookPage {...props} login={login} />}
+                />
+                <Route exact path='*' component={NotFoundPage} />
             </Switch>
         </Router>
     )
