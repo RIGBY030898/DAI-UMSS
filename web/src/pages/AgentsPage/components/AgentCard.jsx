@@ -10,6 +10,7 @@ class AgentCard extends Component {
 
         this.goMessage = this.goMessage.bind(this)
         this.goAddBook = this.goAddBook.bind(this)
+        this.eliminateMe = this.eliminateMe.bind(this)
     }
 
     goMessage() {}
@@ -22,6 +23,11 @@ class AgentCard extends Component {
             type,
         } = this.props
         history.push(`${path}/${type}/${name}`)
+    }
+
+    eliminateMe() {
+        const { agentService, name, type } = this.props
+        agentService.deleteAgent(type, name)
     }
 
     render() {
@@ -54,7 +60,11 @@ class AgentCard extends Component {
                         </Col>
                         <Col sm={6}>
                             <center>
-                                <Button variant='outline-danger' className='rounded-pill'>
+                                <Button
+                                    variant='outline-danger'
+                                    className='rounded-pill'
+                                    onClick={this.eliminateMe}
+                                >
                                     Eliminar
                                 </Button>
                             </center>
