@@ -26,10 +26,20 @@ class AgentNav extends Component {
 
     updateAgents(args) {
         if (args) {
-            this.setState({
-                agents: args[0],
-                show: true,
-            })
+            const data = args[0]
+            const { removed, agentName, status, message } = data
+            if (removed !== undefined) {
+                if (removed) {
+                    alert(`El agente ${agentName} fue eliminado ssatisfactoriamente :)`)
+                } else {
+                    alert(`Error ${status} ${message}`)
+                }
+            } else {
+                this.setState({
+                    agents: args[0],
+                    show: true,
+                })
+            }
         }
     }
 
@@ -41,7 +51,12 @@ class AgentNav extends Component {
                     <Row>
                         {agents.map(({ agent: { name, type } }) => (
                             <Col xl={4} key={name}>
-                                <AgentCard {...this.props} name={name} type={type} />
+                                <AgentCard
+                                    {...this.props}
+                                    name={name}
+                                    type={type}
+                                    agentService={this.agentService}
+                                />
                             </Col>
                         ))}
                     </Row>

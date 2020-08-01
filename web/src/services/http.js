@@ -31,7 +31,7 @@ const post = async (url, body) => {
 export { get, post }*/
 
 import axios from 'axios'
-import { history } from '.'
+//import { history } from '.'
 
 const baseURL = '/api'
 const BEConfig = {
@@ -49,7 +49,8 @@ const handleStatusCodes = ({ data, status, ...rest }) => {
         case 403:
             return { error: 'forbidden' }
         case 404:
-            history.push('/404')
+            return { data, status, ...rest }
+            //history.push('/404')
             return
         case 500:
             console.error(`status ${status}: ${JSON.stringify(data)}`)

@@ -73,6 +73,54 @@ class AgentService extends Service {
             this.notify(agents)
         })
     }
+
+    async deleteAgent(agentType, agentName) {
+        var data
+        var removed = false
+        await http
+            .request({
+                url: `/agents/${agentType}/${agentName}`,
+                method: 'DELETE',
+            })
+            .then((response) => {
+                data = { agentName: response }
+                removed = true
+            })
+            .catch((error) => {
+                try {
+                    const { status } = error
+                    if (status === 404) {
+                        removed = true
+                        data = { agentName: agentName }
+                    } else {
+                        data = error
+                    }
+                } catch {
+                    data = error
+                }
+            })
+        if (removed) {
+            const user = localStorage.getItem('user')
+            this.db
+                .child(user)
+                .child(agentType)
+                .child(agentName)
+                .remove()
+                .catch(() => {
+                    data = { message: 'Error con la base de datos', status: 500 }
+                    removed = false
+                })
+                .finally(() => {
+                    this.notify({ ...data, removed })
+                })
+        } else {
+            try {
+                this.notify({ ...data['data'], removed })
+            } catch {
+                this.notify({ ...data, removed })
+            }
+        }
+    }
 }
 
 export { reference, AgentService, getValueAgentType, agentsType }
