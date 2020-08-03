@@ -20,7 +20,7 @@ public class BookBuyerAgent extends SpringAgent implements BuyerInterface {
     @Override
     protected void setup() {
         super.setup();
-        System.out.println("Hello, I'm buyer agent!");
+        System.out.println("Hola Agente-Comprador " + getLocalName() + " LISTO");
         // Get the title of the book to buy as a start-up argument
         /*Object[] args = getArguments();
         if (args != null && args.length > 0) {
@@ -66,12 +66,12 @@ public class BookBuyerAgent extends SpringAgent implements BuyerInterface {
     @Override
     public void addBookToBuy(String title, int price) {
         targetBookTitle = title;
-        System.out.println("Target book is "+targetBookTitle);
+        System.out.println("El libro que desea comprar es "+targetBookTitle);
         addBehaviour(new TickerBehaviour(this, 10000) {
             private static final long serialVersionUID = 1L;
 
             protected void onTick() {
-                System.out.println("Trying to buy "+targetBookTitle);
+                System.out.println("Intentando comprar "+targetBookTitle);
                 // Update the list of seller agents
                 DFAgentDescription template = new DFAgentDescription();
                 ServiceDescription sd = new ServiceDescription();
@@ -79,7 +79,7 @@ public class BookBuyerAgent extends SpringAgent implements BuyerInterface {
                 template.addServices(sd);
                 try {
                     DFAgentDescription[] result = DFService.search(myAgent, template);
-                    System.out.println("Found the following seller agents:");
+                    System.out.println("Se encontró el siguiente AgenteVendedor:");
                     sellerAgents = new AID[result.length];
                     for (int i = 0; i < result.length; ++i) {
                         sellerAgents[i] = result[i].getName();
@@ -98,7 +98,7 @@ public class BookBuyerAgent extends SpringAgent implements BuyerInterface {
 
     @Override
     protected void takeDown() {
-        System.out.println("Book Buyer Agent " + this.getLocalName() + " has stopped! D: -> Goodbye!");
+        System.out.println("El Agente-Comprador " + this.getLocalName() + " se ha detenido.");
     }
 
     /**
@@ -179,14 +179,14 @@ public class BookBuyerAgent extends SpringAgent implements BuyerInterface {
                         if (reply.getPerformative() == ACLMessage.INFORM) {
                             // Purchase successful. We can terminate
                             System.out.println(targetBookTitle
-                                    + " successfully purchased from agent "
+                                    + " vendido al agente Comprador "
                                     + reply.getSender().getName());
-                            System.out.println("Price = " + bestPrice);
+                            System.out.println("Precio = " + bestPrice);
                             //myAgent.doDelete();
                             AgentsManager.takeDownAgent(myAgent.getLocalName(), myAgent);
                         }
                         else {
-                            System.out.println("Attempt failed: requested book already sold.");
+                            System.out.println("Falló el intento: el libro solicitado ya fué vendido.");
                         }
 
                         step = 4;
@@ -200,7 +200,7 @@ public class BookBuyerAgent extends SpringAgent implements BuyerInterface {
 
         public boolean done() {
             if (step == 2 && bestSeller == null) {
-                System.out.println("Attempt failed: "+targetBookTitle+" not available for sale");
+                System.out.println("Falló el intento: el libro "+targetBookTitle+" no está disponible para la venta.");
             }
             return ((step == 2 && bestSeller == null) || step == 4);
         }

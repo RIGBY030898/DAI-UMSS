@@ -54,7 +54,7 @@ public class BookSellerAgent extends SpringAgent implements SellerInterface {
         }
 
         // Printout a dismissal message
-        System.out.println("Seller-agent "+getAID().getName()+" terminating.");
+        System.out.println("Agente-Vendedor "+getAID().getName()+" terminado.");
     }
 
     /**
@@ -70,7 +70,7 @@ public class BookSellerAgent extends SpringAgent implements SellerInterface {
 
             public void action() {
                 catalogue.put(title, new Integer(price));
-                System.out.println(title + " inserted into catalogue. Price = " + price);
+                System.out.println(title + " se insertó al catálogo. Precio = " + price);
             }
         });
     }
@@ -135,7 +135,7 @@ public class BookSellerAgent extends SpringAgent implements SellerInterface {
                 Integer price = (Integer) catalogue.remove(title);
                 if (price != null) {
                     reply.setPerformative(ACLMessage.INFORM);
-                    System.out.println(title+" sold to agent "+msg.getSender().getName());
+                    System.out.println(title+" vendido al agente comprador "+msg.getSender().getName());
                 }
                 else {
                     // The requested book has been sold to another buyer in the meanwhile .
