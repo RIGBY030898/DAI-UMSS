@@ -179,7 +179,7 @@ public class BookBuyerAgent extends SpringAgent implements BuyerInterface {
                         if (reply.getPerformative() == ACLMessage.INFORM) {
                             // Purchase successful. We can terminate
                             System.out.println(targetBookTitle
-                                    + " vendido al agente Comprador "
+                                    + " comprado del agente Vendedor "
                                     + reply.getSender().getName());
                             System.out.println("Precio = " + bestPrice);
                             //myAgent.doDelete();

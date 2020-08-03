@@ -135,7 +135,7 @@ public class BookSellerAgent extends SpringAgent implements SellerInterface {
                 Integer price = (Integer) catalogue.remove(title);
                 if (price != null) {
                     reply.setPerformative(ACLMessage.INFORM);
-                    System.out.println(title+" vendido al agente comprador "+msg.getSender().getName());
+                    System.out.println(title+" vendido al agente Comprador "+msg.getSender().getName());
                 }
                 else {
                     // The requested book has been sold to another buyer in the meanwhile .
