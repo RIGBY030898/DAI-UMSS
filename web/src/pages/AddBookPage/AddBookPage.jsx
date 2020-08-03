@@ -68,6 +68,10 @@ class AddBookPage extends Component {
         this.setState({ price: value })
     }
 
+    isBuyerAgent(agentType) {
+        return agentType === 'buyer'
+    }
+
     render() {
         const { login, history } = this.props
         const { agentName, agentType, book, price } = this.state
@@ -105,16 +109,21 @@ class AddBookPage extends Component {
                                             value={book}
                                         />
                                     </Form.Group>
-                                    <Form.Group>
-                                        <Form.Label>Precio del libro</Form.Label>
-                                        <Form.Control
-                                            type='number'
-                                            placeholder='Ingrese el precio del libro'
-                                            min='1'
-                                            onChange={this.handleChangePrice}
-                                            value={price}
-                                        />
-                                    </Form.Group>
+
+                                    {
+                                        this.isBuyerAgent(agentType) ? <></> : (
+                                            <Form.Group>
+                                                <Form.Label>Precio del libro</Form.Label>
+                                                <Form.Control
+                                                    type='number'
+                                                    placeholder='Ingrese el precio del libro'
+                                                    min='1'
+                                                    onChange={this.handleChangePrice}
+                                                    value={price}
+                                                />
+                                            </Form.Group>
+                                        )
+                                    }
                                     <Button variant='success' type='submit' block>
                                         Añadir Libro
                                     </Button>
